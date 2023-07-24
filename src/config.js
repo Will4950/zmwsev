@@ -14,3 +14,8 @@ config['clientID'] = process.env.clientID;
 config['clientSecret'] = process.env.clientSecret;
 config['accountID'] = process.env.accountID;
 config['secretToken'] = process.env.secretToken;
+
+config['elastic'] = process.env.elastic || false;
+config['elasticCloudID'] = process.env.elasticCloudID;
+config['elasticApiKey'] = process.env.elasticApiKey;
+config['elasticIndex'] = process.env.elasticIndex;

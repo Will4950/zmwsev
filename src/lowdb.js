@@ -1,5 +1,8 @@
+import {config} from './config.js';
+import {logger} from './logger.js';
 import {Low} from 'lowdb';
 import {Memory} from 'lowdb';
+import {Client} from '@elastic/elasticsearch';
 
 const adapter = new Memory();
 
@@ -11,6 +14,26 @@ export const {events} = db.data;
 export const {locals} = db.data;
 
 export async function writeEvent(event) {
+	if (config.elastic === 'true') {
+		try {
+			const elasticSearch = new Client({
+				cloud: {
+					id: config.elasticCloudID
+				},
+				auth: {
+					apiKey: config.elasticApiKey
+				}
+			});
+			await elasticSearch.index({
+				index: config.elasticIndex,
+				document: {...event}
+			});
+			await elasticSearch.indices.refresh({index: config.elasticIndex});
+			if (config.debug) logger.debug(`sending event to ElasticSearch`);
+		} catch (e) {
+			logger.warn(`ElasticSearch | ${e.message}`);
+		}
+	}
 	db.data.events.push(event);
 	db.write();
 }

@@ -87,6 +87,14 @@ ZMWSEV can be preconfigured so the values do not need to be entered on every res
     ```
     > replace these values with your own
 
+- Events can also be forwarded to ElasticSearch indices.  Add the follwing to the .env file to enable this feature:
+    ```
+    elastic=true
+    elasticCloudID=
+    elasticApiKey=
+    elasticIndex=
+    ```
+
 ## Usage
 
 - Heartbeats will automatically be sent to keep the WebSocket connection alive.  The heart icon will blink when a heartbeat is sent.

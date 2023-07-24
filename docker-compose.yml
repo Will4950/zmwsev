@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  zmwsev:
+    build: .
+    container_name: zmwsev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8080:8080
+    command: dumb-init node index.js

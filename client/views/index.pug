@@ -1,0 +1,99 @@
+extends _layout.pug
+block main
+    .container-fluid(style='max-width: 900px; min-width: 734px; margin-top: 40px').rounded-4.shadow-lg.border.bg-white
+        .row.pt-3.mx-2.text-midnight
+            .position-relative
+                .position-absolute.top-0.end-0
+                    .row.gx-0.align-items-center.justify-content-end(data-bs-title='Configure ZMWSEV options.\nThe WebSocket client will be stopped while the configuration modal is open.' data-bs-toggle='tooltip' data-bs-placement='left')
+                        .col
+                            i.bi.bi-gear-fill.fs-3.ms-2.me-2(data-bs-target='#settingsModal' data-bs-toggle='modal' type='button')
+                        .col
+                            p.text-center.mb-0(data-bs-target='#settingsModal' data-bs-toggle='modal' type='button') Configure
+            .col
+                h1.fw-bold Zoom WebSocket Event Viewer
+                .position-relative
+                    .position-absolute.top-0.start-0.mx-3.mt-3
+                        p.small.text-bloom080 WebSocket: 
+                            span#status-online.small.fw-bold.text-success.hide CONNECTED
+                                i.bi.bi-heart-pulse.px-1.status-text
+                            span#status-offline.small.fw-bold.text-danger.hide DISCONNECTED
+                            span#status-loading.small.fw-bold.text-info CHECKING STATUS
+            #noerror.row.px-0.mx-0.mb-4                
+                .col.bg-perigee.rounded-3.border.shadow-sm.pb-4
+                    table#eventTable.table-hover.table-sm(
+                        data-buttons='eventButtons'
+                        data-detail-formatter='detailFormatter'
+                        data-detail-view='true'
+                        data-detail-view-by-click='true'
+                        data-page-size=15
+                        data-pagination='true'
+                        data-pagination-parts=['pageInfo', 'pageList']
+                        data-search='true'
+                        data-toggle='table')
+                        thead
+                            tr
+                                th(data-field='eventDescription') Event log
+                                th(data-field='eventData' data-visible='false')
+            #error.row.px-0.mx-0.mb-4.hide
+                .col.bg-noon.pb-2.mx-2.rounded-3.border.shadow-sm
+                    h3#error-title.fw-bold.pt-3.px-3.mt-5 WebSocket Client Connection Error
+                        .row.bg-warning.mt-3.rounded-3
+                            h4
+                                p.my-1 
+                                    span#error-message.text-white This is some error text about the thing.
+block modal
+    #modal_problem.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1')
+        .modal-dialog
+            .modal-content
+                .modal-header.bg-success
+                    h5.modal-title.text-white 
+                        | Where did the server go?
+                .modal-body
+                    .d-flex.flex-row.justify-content-center
+                        .mt-1.spinner-border.me-2(role='status' style='width: 16px; height: 16px') 
+                        | Searching for server...
+                .modal-footer
+    #settingsModal.modal.fade(aria-hidden='true' aria-labelledby='settingsModalLabel' tabindex='-1')
+        .modal-dialog.modal-lg(style='max-width: 600px;')
+            .modal-content
+                .modal-header
+                    h1#settingsModalLabel.modal-title.fs-5 ZMWSEV Configuration
+                    button.btn-close(aria-label='Close' data-bs-dismiss='modal' type='button')
+                .modal-body
+                    .container-fluid
+                        .row.mb-4.mt-2
+                            .col.bg-perigee.rounded-3.border.shadow-sm
+                                .input-group.input-group-sm.px-1.py-1.pb-2
+                                    label.form-label Account ID
+                                    .input-group.input-group-sm
+                                        input#accountID.form-control.save(placeholder='Put your Account ID here' value=accountID)
+                        .row.mb-4.mt-2
+                            .col.bg-perigee.rounded-3.border.shadow-sm
+                                .input-group.input-group-sm.px-1.py-1.pb-2
+                                    label.form-label Client ID
+                                    .input-group.input-group-sm
+                                        input#clientID.form-control.save(placeholder='Put your Client ID here' value=clientID)
+                        .row.mb-4.mt-2
+                            .col.bg-perigee.rounded-3.border.shadow-sm
+                                .input-group.input-group-sm.px-1.py-1.pb-2
+                                    label.form-label Client Secret
+                                    .input-group.input-group-sm
+                                        input#clientSecret.form-control.save(placeholder='Put your Client Secret here' type='password' value=clientSecret)
+                                        span.btn.btn-secondary.showhidepw(for='clientSecret' type='button')
+                                            i.bi.bi-eye
+                        .row.mb-4.mt-2
+                            .col.bg-perigee.rounded-3.border.shadow-sm
+                                .input-group.input-group-sm.px-1.py-1.pb-2
+                                    label.form-label Secret Token
+                                    .input-group.input-group-sm
+                                        input#secretToken.form-control.save(placeholder='Put your Secret Token here' type='password' value=secretToken)
+                                        span.btn.btn-secondary.showhidepw(for='secretToken' type='button')
+                                            i.bi.bi-eye
+                        .row.mb-4.mt-2
+                            .col.bg-perigee.rounded-3.border.shadow-sm
+                                .input-group.input-group-sm.px-1.py-1.pb-2
+                                    label.form-label WSS Endpoint URL
+                                    .input-group.input-group-sm
+                                        input#wssEndpoint.form-control.save(placeholder='Put your WSS Endpoint URL here' value=wssEndpoint)
+                .modal-footer
+                    button.btn.btn-secondary(aria-label='Close' data-bs-dismiss='modal' data-bs-target='#settingsModal' type='button' onclick='socket.emit("event", "closeConfiguration")') Close and restart WebSocket client

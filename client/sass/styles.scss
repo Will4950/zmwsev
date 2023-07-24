@@ -1,0 +1,28 @@
+@use 'sass:map';
+@import '_config';
+
+.active > .page-link {
+	background-color: map.get($theme-colors, 'bloom080');
+	border-color: map.get($theme-colors, 'bloom080');
+}
+
+.page-link {
+	color: map.get($theme-colors, 'bloom080');
+}
+
+a {
+	text-decoration: none;
+	color: map.get($theme-colors, 'primary');
+}
+
+a:hover {
+	color: map.get($theme-colors, 'info');
+}
+
+.input-group-text {
+	background: white;
+}
+
+.hide {
+	display: none;
+}

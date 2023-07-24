@@ -1,5 +1,7 @@
 # Zoom WebSocket Event Viewer (ZMWSEV)
+
 ![wow](docs/zmwsev.gif)
+
 This example app uses Node.js + Express to create a Zoom WebSocket event listener and viewer.
 
 # Features

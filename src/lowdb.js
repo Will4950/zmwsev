@@ -3,6 +3,7 @@ import {logger} from './logger.js';
 import {Low} from 'lowdb';
 import {Memory} from 'lowdb';
 import {Client} from '@elastic/elasticsearch';
+import {readFileSync} from 'node:fs';
 
 const adapter = new Memory();
 
@@ -36,6 +37,17 @@ export async function writeEvent(event) {
 			}
 		} else {
 			try {
+				let clientConfig = {
+					node: config.elasticNode,
+					auth: {username: config.elasticUser, password: config.elasticPassword}
+				};
+				if (config.elasticTLS === 'true') {
+					clientConfig.tls = {
+						ca: readFileSync('./http_ca.crt'),
+						rejectUnauthorized: false
+					};
+				}
+
 				const elasticSearch = new Client({node: config.elasticNode});
 
 				try {

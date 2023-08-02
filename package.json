@@ -1,6 +1,6 @@
 {
 	"name": "zmwsev",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Zoom WebSocket Event Viewer",
 	"type": "module",
 	"engines": {

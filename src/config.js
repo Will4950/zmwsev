@@ -21,3 +21,6 @@ config['elasticApiKey'] = process.env.elasticApiKey;
 config['elasticIndex'] = process.env.elasticIndex;
 config['elasticCloud'] = process.env.elasticCloud;
 config['elasticNode'] = process.env.elasticNode;
+config['elasticUser'] = process.env.elasticUser;
+config['elasticPassword'] = process.env.elasticPassword;
+config['elasticTLS'] = process.env.elasticTLS;

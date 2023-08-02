@@ -43,20 +43,20 @@ export async function writeEvent(event) {
 				};
 				if (config.elasticTLS === 'true') {
 					clientConfig.tls = {
-						ca: readFileSync('./http_ca.crt'),
+						ca: readFileSync('./http_ca.crt', 'utf8'),
 						rejectUnauthorized: false
 					};
 				}
 
-				const elasticSearch = new Client({node: config.elasticNode});
+				const elasticSearch = new Client(clientConfig);
 
 				try {
 					await elasticSearch.indices.create({index: config.elasticIndex});
 				} catch (e) {
-					if (config.debug) logger.debug(`create: | ${e.message}`);
+					if (!e.message.includes('resource_already_exists_exception')) {
+						if (config.debug) logger.debug(`create: | ${e.message}`);
+					}
 				}
-
-				await elasticSearch.indices.refresh({index: config.elasticIndex});
 				await elasticSearch.index({
 					index: config.elasticIndex,
 					document: {...event}

@@ -19,3 +19,5 @@ config['elastic'] = process.env.elastic || false;
 config['elasticCloudID'] = process.env.elasticCloudID;
 config['elasticApiKey'] = process.env.elasticApiKey;
 config['elasticIndex'] = process.env.elasticIndex;
+config['elasticCloud'] = process.env.elasticCloud;
+config['elasticNode'] = process.env.elasticNode;
